@@ -1,6 +1,7 @@
-from itsnp.bot import ItsnpBot
 from discord import Color, Embed
 from discord.ext import commands
+
+from itsnp.bot import ItsnpBot
 
 
 class Core(commands.Cog):
@@ -14,6 +15,7 @@ class Core(commands.Cog):
         await ctx.reply(
             embed=Embed(title="Pong!", description=f"{latency}ms", color=Color.blue())
         )
+
 
 def setup(bot: ItsnpBot):
     bot.add_cog(Core(bot))

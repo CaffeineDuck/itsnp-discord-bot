@@ -14,7 +14,6 @@ class GuildModel(Model):
     )
     name = fields.TextField(description="Name of the guild")
 
-
     @classmethod
     async def from_guild_object(cls, guild: Guild):
         return (await cls.get_or_create(id=guild.id, name=guild.name))[0]
