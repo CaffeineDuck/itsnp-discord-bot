@@ -11,4 +11,5 @@ jobs:
           python-version: 3.9
       - uses: jamescurtin/isort-action@master
         with:
+          isortVersoin: "latest"
           requirementsFiles: "Pipfile"
