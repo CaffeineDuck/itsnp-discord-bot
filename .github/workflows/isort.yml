@@ -11,4 +11,4 @@ jobs:
           python-version: 3.9
       - uses: jamescurtin/isort-action@master
         with:
-          requirementsFiles: "Pipfile.lock Pipfile"
+          requirementsFiles: "Pipfile.lock"
