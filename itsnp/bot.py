@@ -22,9 +22,10 @@ from discord import (
 from discord.ext import commands, tasks
 from discord.http import HTTPClient
 from tortoise import Tortoise
-from .utils.error_logging import error_to_embed
 
 from models import GuildModel
+
+from .utils.error_logging import error_to_embed
 
 
 class ItsnpBot(commands.Bot):
@@ -94,7 +95,7 @@ class ItsnpBot(commands.Bot):
         # Auto cog reload
         if self.developement_environment:
             from .utils.autoreloader import AutoReloader
-            
+
             reloader = AutoReloader(self)
             reloader.cog_watcher_task.start()
 

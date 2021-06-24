@@ -1,8 +1,10 @@
 import os
 import traceback
-from itsnp.bot import ItsnpBot
-from discord.ext import tasks, commands
+
 import watchgod
+from discord.ext import commands, tasks
+
+from itsnp.bot import ItsnpBot
 
 
 class AutoReloader:
