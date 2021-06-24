@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pydantic = "*"
+aiohttp = "*"
+"discord.py" = "*"
+tortoise-orm = {extras = ["asyncpg"], version = "*"}
+cachetools = "*"
+jishaku = "*"
+
+[dev-packages]
+black = "*"
+isort = "*"
+python-dotenv = "*"
+aerich = "*"
+watchgod = "*"
+
+[requires]
+python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true
