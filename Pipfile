@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pydantic = "*"
+pydantic = {extras = ["dotenv"], version = "*"}
 aiohttp = "*"
 "discord.py" = "*"
 tortoise-orm = {extras = ["asyncpg"], version = "*"}
@@ -14,7 +14,6 @@ jishaku = "*"
 [dev-packages]
 black = "*"
 isort = "*"
-python-dotenv = "*"
 aerich = "*"
 watchgod = "*"
 
