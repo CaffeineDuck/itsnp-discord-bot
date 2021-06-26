@@ -1,7 +1,7 @@
 import contextlib
+import logging
 import re
 import traceback
-import logging
 from typing import Iterable, Mapping, Sequence
 
 from aiohttp import ClientSession
@@ -28,8 +28,8 @@ from models import GuildModel
 
 from .utils.error_logging import error_to_embed
 
-
 logging.basicConfig(level=logging.INFO)
+
 
 class ItsnpBot(commands.Bot):
     http: HTTPClient

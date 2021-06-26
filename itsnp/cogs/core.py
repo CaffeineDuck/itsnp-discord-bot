@@ -1,12 +1,14 @@
-from models import GuildModel
 from discord import Color, Embed, NotFound
 from discord.ext import commands
 
 from itsnp.bot import ItsnpBot
+from models import GuildModel
+
 
 class MessageNotRefrenced(commands.CommandError):
     def __str__(self):
         return "Please reply to the valid message you want to re-run!"
+
 
 class Core(commands.Cog):
     def __init__(self, bot: ItsnpBot):
