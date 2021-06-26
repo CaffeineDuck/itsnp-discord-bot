@@ -1,10 +1,10 @@
 from discord import Color, Embed
-from discord.ext import commands
+from discord.ext import commands, Cog
 
 from itsnp.bot import ItsnpBot
 
 
-class Core(commands.Cog):
+class Core(Cog):
     def __init__(self, bot: ItsnpBot):
         self.bot = bot
 
@@ -12,8 +12,9 @@ class Core(commands.Cog):
     async def ping(self, ctx: commands.Context):
         """Check latency of the bot"""
         latency = str(round(self.bot.latency * 1000, 1))
-        await ctx.reply(
-            embed=Embed(title="Pong!", description=f"{latency}ms", color=Color.blue())
+        await ctx.send(
+            embed=Embed(title="Pong!",
+                        description=f"{latency}ms", color=Color.blue())
         )
 
 
