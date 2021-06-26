@@ -1,0 +1,17 @@
+services:
+    db:
+        image: postgres:latest
+        volumes: 
+            - postgres_db:/var/lib/postgresql/data
+        env_file: .env
+
+    bot:
+        env_file: .env
+        build: .
+        depends_on:
+            - db
+        links: 
+            - db:postgres
+    
+volumes:
+    postgres_db:
