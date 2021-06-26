@@ -1,4 +1,5 @@
 import contextlib
+import logging
 import re
 import traceback
 from typing import Iterable, Mapping, Sequence
@@ -26,6 +27,8 @@ from tortoise import Tortoise
 from models import GuildModel
 
 from .utils.error_logging import error_to_embed
+
+logging.basicConfig(level=logging.INFO)
 
 
 class ItsnpBot(commands.Bot):
@@ -103,6 +106,7 @@ class ItsnpBot(commands.Bot):
     def load_extensions(self, extentions: Iterable[str]):
         for ext in extentions:
             try:
+                print(f"Loaded {ext}")
                 self.load_extension(ext)
             except Exception as e:
                 traceback.print_exception(type(e), e, e.__traceback__)
@@ -152,7 +156,7 @@ class ItsnpBot(commands.Bot):
             return
 
         # Respond with prefix on ping
-        if self.respond_to_ping and self.user in msg.mentions:
+        if self.respond_to_ping and f"<@!{self.user.id}>" == msg.content.strip():
             return await msg.reply(
                 "My prefix here is `{}`".format(await self.determine_prefix(None, msg))
             )
