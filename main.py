@@ -12,8 +12,8 @@ if __name__ == "__main__":
     from tortoise_config import tortoise_config
 
     extensions = [
-        "itsnp.cogs.core",
-        "itsnp.cogs.info",
+      "itsnp.cogs.core",
+      "itsnp.cogs.info",
     ]
 
     bot = ItsnpBot(
