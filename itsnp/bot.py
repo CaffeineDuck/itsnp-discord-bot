@@ -176,6 +176,9 @@ class ItsnpBot(commands.Bot):
     async def on_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ):
+        if self.developement_environment:
+            return traceback.print_exception(type(error), error, error.__traceback__)
+
         if isinstance(error, commands.CommandNotFound):
             return
         if not isinstance(error, commands.CommandInvokeError):
