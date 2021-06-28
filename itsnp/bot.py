@@ -1,4 +1,5 @@
 import contextlib
+from inspect import trace
 import logging
 import re
 import traceback
@@ -91,9 +92,9 @@ class ItsnpBot(commands.Bot):
     # Connect to DB
     @tasks.loop(seconds=0, count=1)
     async def connect_db(self):
-        print("Connecting to db")
+        logging.info("Connecting to db")
         await Tortoise.init(self.tortoise_config)
-        print("Database connected")
+        logging.info("Database connected")
 
         # Auto cog reload
         if self.developement_environment:
@@ -106,7 +107,7 @@ class ItsnpBot(commands.Bot):
     def load_extensions(self, extentions: Iterable[str]):
         for ext in extentions:
             try:
-                print(f"Loaded {ext}")
+                logging.info(f"Loaded {ext}")
                 self.load_extension(ext)
             except Exception as e:
                 traceback.print_exception(type(e), e, e.__traceback__)
@@ -136,7 +137,7 @@ class ItsnpBot(commands.Bot):
 
     # Listeners
     async def on_ready(self):
-        print(f"Logged in with {self.user.name}#{self.user.discriminator}")
+        logging.info(f"Logged in with {self.user.name}#{self.user.discriminator}")
 
     async def on_message(self, msg: Message):
         # Don't respond to any bots
@@ -244,4 +245,7 @@ class ItsnpBot(commands.Bot):
 
         info_embed.add_field(name="User", value=value)
 
-        await self.log_webhook.send(embeds=[*traceback_embeds, info_embed])
+        await self.log_webhook.send(
+            content="---------------\n\n**NEW ERROR**\n\n---------------",
+            embeds=[*traceback_embeds, info_embed],
+        )

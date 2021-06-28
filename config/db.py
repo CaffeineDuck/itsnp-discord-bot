@@ -7,8 +7,8 @@ class DbConfig(BaseSettings):
     user: str
     password: str
     db: str
-    port: Optional[int] = 5432
-    host: Optional[str] = "localhost"
+    port: int
+    host: str
 
     class Config:
         env_file = ".env"
