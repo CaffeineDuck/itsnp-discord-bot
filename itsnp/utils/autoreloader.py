@@ -1,5 +1,6 @@
 import os
 import traceback
+import logging
 
 import watchgod
 from discord.ext import commands, tasks
@@ -29,11 +30,11 @@ class AutoReloader:
                             pass
                         finally:
                             self.bot.load_extension(extension_name)
-                            print(f"AutoReloaded {extension_name}.")
+                            logging.info(f"AutoReloaded {extension_name}.")
                     else:
                         try:
                             self.bot.unload_extension(extension_name)
-                            print(f"AutoUnloaded {extension_name}.")
+                            logging.info(f"AutoUnloaded {extension_name}.")
                         except commands.ExtensionNotLoaded:
                             pass
                 except (commands.ExtensionFailed, commands.NoEntryPointError) as e:
