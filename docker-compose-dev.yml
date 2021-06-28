@@ -1,19 +1,19 @@
 services:
-    db:
+    dev_db:
         image: postgres:latest
         volumes: 
-            - postgres_db:/var/lib/postgresql/data
+            - psql_dev_db:/var/lib/postgresql/data
         env_file: .env
 
-    bot:
+    dev_bot:
         env_file: .env
         build: .
         depends_on:
-            - db
+            - dev_db 
         links: 
-            - db:postgres
+            - dev_db:postgres
         volumes:
             - ./:/bot
     
 volumes:
-    postgres_db:
+    psql_dev_db:
