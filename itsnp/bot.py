@@ -1,5 +1,4 @@
 import contextlib
-from inspect import trace
 import logging
 import re
 import traceback
