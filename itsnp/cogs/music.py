@@ -1,9 +1,9 @@
 import asyncio
 import datetime as dt
-from dis import dis
 import random
 import re
 import typing as t
+from dis import dis
 from enum import Enum
 
 import discord
@@ -81,14 +81,14 @@ class Queue:
         if not self._queue:
             raise QueueIsEmpty
 
-        return self._queue[self.position + 1:]
+        return self._queue[self.position + 1 :]
 
     @property
     def history(self):
         if not self._queue:
             raise QueueIsEmpty
 
-        return self._queue[:self.position]
+        return self._queue[: self.position]
 
     @property
     def length(self):
@@ -119,7 +119,7 @@ class Queue:
 
         upcoming = self.upcoming
         random.shuffle(upcoming)
-        self._queue = self._queue[:self.position + 1]
+        self._queue = self._queue[: self.position + 1]
         self._queue.extend(upcoming)
 
     def set_repeat_mode(self, mode):
@@ -176,9 +176,7 @@ class Player(wavelink.Player):
     async def choose_track(self, ctx, tracks):
         def _check(r, u):
             return (
-                r.emoji in OPTIONS.keys()
-                and u == ctx.author
-                and r.message.id == msg.id
+                r.emoji in OPTIONS.keys() and u == ctx.author and r.message.id == msg.id
             )
 
         embed = discord.Embed(
@@ -190,17 +188,21 @@ class Player(wavelink.Player):
                 )
             ),
             colour=ctx.author.colour,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.utcnow(),
         )
         embed.set_author(name="Query Results")
-        embed.set_footer(text=f"Invoked by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
+        embed.set_footer(
+            text=f"Invoked by {ctx.author.display_name}", icon_url=ctx.author.avatar_url
+        )
 
         msg = await ctx.send(embed=embed)
-        for emoji in list(OPTIONS.keys())[:min(len(tracks), len(OPTIONS))]:
+        for emoji in list(OPTIONS.keys())[: min(len(tracks), len(OPTIONS))]:
             await msg.add_reaction(emoji)
 
         try:
-            reaction, _ = await self.bot.wait_for("reaction_add", timeout=60.0, check=_check)
+            reaction, _ = await self.bot.wait_for(
+                "reaction_add", timeout=60.0, check=_check
+            )
         except asyncio.TimeoutError:
             await msg.delete()
             await ctx.message.delete()
@@ -263,8 +265,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
                 "port": 2333,
                 "password": "youshallnotpass",
                 "identifier": "MAIN",
-                "region": 'india',
-                "rest_uri": "http://lavalink:2333"
+                "region": "india",
+                "rest_uri": "http://lavalink:2333",
             }
         }
 
@@ -359,7 +361,9 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @next_command.error
     async def next_command_error(self, ctx, exc):
         if isinstance(exc, QueueIsEmpty):
-            await ctx.send("This could not be executed as the queue is currently empty.")
+            await ctx.send(
+                "This could not be executed as the queue is currently empty."
+            )
         elif isinstance(exc, NoMoreTracks):
             await ctx.send("There are no more tracks in the queue.")
 
@@ -377,7 +381,9 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @previous_command.error
     async def previous_command_error(self, ctx, exc):
         if isinstance(exc, QueueIsEmpty):
-            await ctx.send("This could not be executed as the queue is currently empty.")
+            await ctx.send(
+                "This could not be executed as the queue is currently empty."
+            )
         elif isinstance(exc, NoPreviousTracks):
             await ctx.send("There are no previous tracks in the queue.")
 
@@ -412,20 +418,25 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             title="Queue",
             description=f"Showing up to next {show} tracks",
             colour=ctx.author.colour,
-            timestamp=dt.datetime.utcnow()
+            timestamp=dt.datetime.utcnow(),
         )
         embed.set_author(name="Query Results")
-        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
+        embed.set_footer(
+            text=f"Requested by {ctx.author.display_name}",
+            icon_url=ctx.author.avatar_url,
+        )
         embed.add_field(
             name="Currently playing",
-            value=getattr(player.queue.current_track, "title", "No tracks currently playing."),
-            inline=False
+            value=getattr(
+                player.queue.current_track, "title", "No tracks currently playing."
+            ),
+            inline=False,
         )
         if upcoming := player.queue.upcoming:
             embed.add_field(
                 name="Next up",
                 value="\n".join(t.title for t in upcoming[:show]),
-                inline=False
+                inline=False,
             )
 
         msg = await ctx.send(embed=embed)
