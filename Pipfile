@@ -6,10 +6,11 @@ name = "pypi"
 [packages]
 pydantic = {extras = ["dotenv"], version = "*"}
 aiohttp = "*"
-"discord.py" = "*"
+"discord.py" = {extras = ["voice"], version = "*"}
 tortoise-orm = {extras = ["asyncpg"], version = "*"}
 cachetools = "*"
 jishaku = "*"
+wavelink = "*"
 
 [dev-packages]
 black = "*"
