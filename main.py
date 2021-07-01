@@ -14,6 +14,7 @@ if __name__ == "__main__":
     extensions = [
         "itsnp.cogs.core",
         "itsnp.cogs.info",
+        "itsnp.cogs.music"
     ]
 
     bot = ItsnpBot(
