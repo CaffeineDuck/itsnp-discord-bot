@@ -21,35 +21,43 @@ OPTIONS = {
 
 
 class AlreadyConnectedToChannel(commands.CommandError):
-    pass
+    def __str__(self) -> str:
+        return "I am already connected to a voice channel!"
 
 
 class NoVoiceChannel(commands.CommandError):
-    pass
-
-
-class QueueIsEmpty(commands.CommandError):
-    pass
+    def __str__(self) -> str:
+        return "Please join a voice channel before playing!"
 
 
 class NoTracksFound(commands.CommandError):
-    pass
+    def __str__(self) -> str:
+        return "No result was found for your query!"
 
 
 class PlayerIsAlreadyPaused(commands.CommandError):
-    pass
+    def __str__(self) -> str:
+        return "Player is already paused"
 
 
 class NoMoreTracks(commands.CommandError):
-    pass
+    def __str__(self) -> str:
+        return "No more tracks are avilable!"
 
 
 class NoPreviousTracks(commands.CommandError):
-    pass
+    def __str__(self) -> str:
+        return "There is no previous track!"
 
 
 class InvalidRepeatMode(commands.CommandError):
-    pass
+    def __str__(self) -> str:
+        return "The repeat mode your provided is invalid!"
+
+
+class QueueIsEmpty(commands.CommandError):
+    def __str__(self) -> str:
+        return "Queue is empty!"
 
 
 class RepeatMode(Enum):
@@ -71,7 +79,7 @@ class Queue:
     @property
     def current_track(self):
         if not self._queue:
-            raise QueueIsEmpty
+            raise QueueIsEmpty()
 
         if self.position <= len(self._queue) - 1:
             return self._queue[self.position]
@@ -79,14 +87,14 @@ class Queue:
     @property
     def upcoming(self):
         if not self._queue:
-            raise QueueIsEmpty
+            raise QueueIsEmpty()
 
         return self._queue[self.position + 1 :]
 
     @property
     def history(self):
         if not self._queue:
-            raise QueueIsEmpty
+            raise QueueIsEmpty()
 
         return self._queue[: self.position]
 
@@ -99,7 +107,7 @@ class Queue:
 
     def get_next_track(self):
         if not self._queue:
-            raise QueueIsEmpty
+            raise QueueIsEmpty()
 
         self.position += 1
 
@@ -115,7 +123,7 @@ class Queue:
 
     def shuffle(self):
         if not self._queue:
-            raise QueueIsEmpty
+            raise QueueIsEmpty()
 
         upcoming = self.upcoming
         random.shuffle(upcoming)
@@ -142,10 +150,12 @@ class Player(wavelink.Player):
 
     async def connect(self, ctx, channel=None):
         if self.is_connected:
-            raise AlreadyConnectedToChannel
+            raise AlreadyConnectedToChannel(
+                "I am already connected to another voice channel!"
+            )
 
         if (channel := getattr(ctx.author.voice, "channel", channel)) is None:
-            raise NoVoiceChannel
+            raise NoVoiceChannel("Please join a voice channel!")
 
         await super().connect(channel.id)
         return channel
@@ -158,7 +168,7 @@ class Player(wavelink.Player):
 
     async def add_tracks(self, ctx, tracks):
         if not tracks:
-            raise NoTracksFound
+            raise NoTracksFound("No results found!")
 
         if isinstance(tracks, wavelink.TrackPlaylist):
             self.queue.add(*tracks.tracks)
@@ -353,7 +363,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         player = self.get_player(ctx)
 
         if not player.queue.upcoming:
-            raise NoMoreTracks
+            raise NoMoreTracks("Queue has ended!")
 
         await player.stop()
         await ctx.send("Playing next track in queue.")
@@ -372,7 +382,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         player = self.get_player(ctx)
 
         if not player.queue.history:
-            raise NoPreviousTracks
+            raise NoPreviousTracks("There is no previous song!")
 
         player.queue.position -= 2
         await player.stop()
@@ -401,7 +411,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @commands.command(name="repeat")
     async def repeat_command(self, ctx, mode: str):
         if mode not in ("none", "1", "all"):
-            raise InvalidRepeatMode
+            raise InvalidRepeatMode("The repease mode you provided is invalid!")
 
         player = self.get_player(ctx)
         player.queue.set_repeat_mode(mode)
@@ -412,7 +422,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         player = self.get_player(ctx)
 
         if player.queue.is_empty:
-            raise QueueIsEmpty
+            raise QueueIsEmpty("Queue is empty!")
 
         embed = discord.Embed(
             title="Queue",
