@@ -8,8 +8,8 @@ services:
         env_file: .env
 
     bot:
+        image: samrid/itsnp-bot:latest
         env_file: .env
-        build: .
         depends_on:
             - db
             - lavalink
@@ -19,7 +19,7 @@ services:
     
     
     lavalink:
-        build: config/music
+        image: samrid/ready-lavalink
     
 volumes:
     postgres_db:
